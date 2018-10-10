@@ -241,7 +241,7 @@ class ExpertSender implements LoggerAwareInterface
 	public function addUserToStopList($listId, $entry)
 	{
 		$data = $this->getBaseData();
-		$data['option'] = $entry;
+		$data['entry'] = $entry;
 
 		$response = $this->client->request(
 			'POST',
