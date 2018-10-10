@@ -42,6 +42,9 @@ class ExpertSender implements LoggerAwareInterface
      * @var string
      */
     protected $apiKey;
+	/**
+	 * @var string
+	 */
     protected $endpointUrl;
     /**
      * @var \GuzzleHttp\ClientInterface|null
@@ -103,7 +106,14 @@ class ExpertSender implements LoggerAwareInterface
         return $apiResult;
     }
 
-    public function getLists($seedLists = false)
+	/**
+	 * @param bool $seedLists
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 *
+	 * @return ListResult
+	 */
+	public function getLists($seedLists = false)
     {
         $data = $this->getBaseData();
         if ($seedLists) {
@@ -219,6 +229,36 @@ class ExpertSender implements LoggerAwareInterface
 
         return $apiResult;
     }
+
+	/**
+	 * @param int    $listId
+	 * @param string $entry
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 *
+	 * @return ApiResult
+	 */
+	public function addUserToStopList($listId, $entry)
+	{
+		$data = $this->getBaseData();
+		$data['option'] = $entry;
+
+		$response = $this->client->request(
+			'POST',
+			$this->getUrl(ExpertSenderEnum::URL_SUPPRESSION_LISTS, $listId),
+			[
+				RequestOptions::HEADERS => [
+					'Content-Type' => 'text/xml',
+				],
+				RequestOptions::QUERY   => $data,
+			]
+		);
+
+		$apiResult = new ApiResult($response);
+		$this->logApiResult(__METHOD__, $apiResult);
+
+		return $apiResult;
+	}
 
     /**
      * @param string   $tableName
@@ -463,7 +503,17 @@ class ExpertSender implements LoggerAwareInterface
         return $apiResult;
     }
 
-    protected function sendTransactionalWithUrlPattern($transactionId, $receiver, array $snippets, $pattern)
+	/**
+	 * @param $transactionId
+	 * @param $receiver
+	 * @param array $snippets
+	 * @param $pattern
+	 *
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 *
+	 * @return ApiResult
+	 */
+	protected function sendTransactionalWithUrlPattern($transactionId, $receiver, array $snippets, $pattern)
     {
         $snippetChunks = [];
         foreach ($snippets as $snippet) {

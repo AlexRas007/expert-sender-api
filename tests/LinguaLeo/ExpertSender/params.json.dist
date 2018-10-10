@@ -2,6 +2,7 @@
     "url": null,
     "key": null,
     "testList": null,
+    "testSuppressionList": null,
     "testTrigger": null,
     "testTransactional": null,
     "testSystemTransactional": null,

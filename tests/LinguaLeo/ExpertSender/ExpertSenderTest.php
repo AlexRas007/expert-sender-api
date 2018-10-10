@@ -70,6 +70,11 @@ class ExpertSenderTest extends TestCase
         return $this->getParam('testList');
     }
 
+    public function getTestSuppressionListId()
+    {
+        return $this->getParam('testSuppressionList');
+    }
+
     public function getTestTrigger()
     {
         return $this->getParam('testTrigger');
@@ -95,7 +100,10 @@ class ExpertSenderTest extends TestCase
         return $this->getParam('testTableName');
     }
 
-    public function testLists()
+	/**
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testLists()
     {
         $randomEmail = sprintf('some_random_%s@gmail.com', mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
 
@@ -127,9 +135,23 @@ class ExpertSenderTest extends TestCase
         $this->assertRegExp('~not found~', $invalidDeleteResult->getErrorMessage());
     }
 
-    /**
-     * @group table
-     */
+	/**
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testSuppressionLists()
+	{
+		$randomEmail = sprintf($this->getTestEmailPattern(), mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
+		$listId = $this->getTestSuppressionListId();
+
+		$result =  $this->expertSender->addUserToStopList($listId, $randomEmail);
+
+		$this->assertTrue($result->isOk());
+	}
+
+	/**
+	 * @group table
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
     public function testAddTableRow()
     {
         $result = $this->expertSender->addTableRow($this->getTestTableName(), [
@@ -141,10 +163,11 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue($result->isOk());
     }
 
-    /**
-     * @group   table
-     * @depends testAddTableRow
-     */
+	/**
+	 * @group   table
+	 * @depends testAddTableRow
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
     public function testGetTableData()
     {
         $result = $this->expertSender->getTableData(
@@ -158,10 +181,11 @@ class ExpertSenderTest extends TestCase
         $this->assertEquals(['Alex', 'True'], $tableData[1]);
     }
 
-    /**
-     * @group   table
-     * @depends testAddTableRow
-     */
+	/**
+	 * @group   table
+	 * @depends testAddTableRow
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
     public function testUpdateTableRow()
     {
         $result = $this->expertSender->updateTableRow($this->getTestTableName(), [
@@ -174,10 +198,11 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue($result->isOk());
     }
 
-    /**
-     * @group   table
-     * @depends testUpdateTableRow
-     */
+	/**
+	 * @group   table
+	 * @depends testUpdateTableRow
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
     public function testDeleteTableRow()
     {
         $result = $this->expertSender->deleteTableRow($this->getTestTableName(), [
@@ -187,7 +212,10 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue($result->isOk());
     }
 
-    public function testChangeEmail()
+	/**
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testChangeEmail()
     {
         $randomEmail = sprintf('some_random_%s@gmail.com', mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
         $randomEmail2 = sprintf('some_random_%s@gmail.com', mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
@@ -218,7 +246,11 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testSendTrigger()
+	/**
+	 * @throws ExpertSenderException
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testSendTrigger()
     {
         $randomEmail = sprintf($this->getTestEmailPattern(), mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
         $listId = $this->getTestListId();
@@ -235,7 +267,11 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testSendTransactional()
+	/**
+	 * @throws ExpertSenderException
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testSendTransactional()
     {
         $randomEmail = sprintf($this->getTestEmailPattern(), mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
         $listId = $this->getTestListId();
@@ -256,7 +292,11 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testSendSystemTransactional()
+	/**
+	 * @throws ExpertSenderException
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testSendSystemTransactional()
     {
         $randomEmail = sprintf($this->getTestEmailPattern(), mt_rand(0, 100000000000).mt_rand(0, 1000000000000));
 
@@ -269,7 +309,10 @@ class ExpertSenderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testAddUserToListAcceptsAndFreezesRequest()
+	/**
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function testAddUserToListAcceptsAndFreezesRequest()
     {
         $result = $this->expertSender->addUserToList($this->addUserToListRequest);
 

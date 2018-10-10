@@ -33,6 +33,7 @@ final class ExpertSenderEnum
     const URL_UPDATE_TABLE_ROW = 'DataTablesUpdateRow';
     const URL_GET_TABLE_DATA = 'DataTablesGetData';
     const URL_GET_LISTS = 'Lists';
+    const URL_SUPPRESSION_LISTS = 'SuppressionLists';
 
     const MODE_SUBSCRIBERS_SHORT = 'Short';
     const MODE_SUBSCRIBERS_LONG = 'Long';
