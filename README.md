@@ -30,6 +30,7 @@ if ($result->isOk()) {
 ## Implemented functions
 
 * addUserToList
+* addUserToStopList
 * deleteUser
 * getUserId
 * addTableRow
