@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 class UserIdResult extends ApiResult
 {
     protected $id;
+	protected $lists = [];
 
     public function __construct(ResponseInterface $response)
     {
@@ -30,6 +31,11 @@ class UserIdResult extends ApiResult
         }
 
         $this->id = (string) $idXml[0];
+
+		$listsXml = (array) $xml->xpath('/ApiResponse/Data/StateOnLists/StateOnList');
+		foreach ($listsXml as $listXml) {
+			$this->lists[] = (string) $listXml->ListId;
+		}
     }
 
     /**
@@ -39,4 +45,12 @@ class UserIdResult extends ApiResult
     {
         return $this->id;
     }
+
+	/**
+	 * @return array
+	 */
+	public function getLists()
+	{
+		return $this->lists;
+	}
 }
