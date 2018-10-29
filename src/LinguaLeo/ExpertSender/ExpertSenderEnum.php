@@ -25,9 +25,9 @@ final class ExpertSenderEnum
     const MODE_IGNORE_AND_REPLACE = 'IgnoreAndReplace';
 
     const URL_SUBSCRIBERS = 'Subscribers';
-    const URL_TRIGGER_PATTERN = 'Triggers/%s';
-    const URL_TRANSACTIONAL_PATTERN = 'Transactionals/%s';
-    const URL_SYSTEM_TRANSACTIONAL_PATTERN = 'SystemTransactionals/%s';
+    const URL_TRIGGER_PATTERN = 'Triggers/';
+    const URL_TRANSACTIONAL_PATTERN = 'Transactionals/';
+    const URL_SYSTEM_TRANSACTIONAL_PATTERN = 'SystemTransactionals/';
     const URL_ADD_TABLE_ROW = 'DataTablesAddRow';
     const URL_DELETE_TABLE_ROW = 'DataTablesDeleteRow';
     const URL_UPDATE_TABLE_ROW = 'DataTablesUpdateRow';
