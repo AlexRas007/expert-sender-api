@@ -574,7 +574,7 @@ class ExpertSender implements LoggerAwareInterface
 
     protected function getUrl(...$parameters)
     {
-        return $this->endpointUrl . implode('/', $parameters);
+        return $this->endpointUrl . '/' . implode('/', $parameters);
     }
 
     /**
